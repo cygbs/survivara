@@ -23,6 +23,7 @@ os.environ["DEEPSEEK_API_KEY"] = API_KEY
 chat = Chat()
 
 END_KEY = 'https://github.com/cygbs/survivara'
+DEBUG_KEY = 0
 chat.set_system_prompt(
     f'''你是一个游戏AI，接受用户请求并负责介绍游戏，
 你当前的游戏名字是survivara，你的名字是survival，
@@ -65,10 +66,13 @@ CHAT(USER_INPUT)
 def 聊天(USER_INPUT, PROMPT):
     USER_INPUT = '用户输入为：\n' + USER_INPUT + '\n用户输入EOF。\n' + PROMPT
     print('='*10+'\nDEBUG: '+USER_INPUT+'\n'+'='*10)
+    global DEBUG_KEY
+    DEBUG_KEY = DEBUG_KEY + 1
+    print('*'*3'第'+str(DEBUG_KEY)+'轮对话，以下是模型回复'+'='*5)
     full_response = CHAT(USER_INPUT)
     if END_KEY in full_response:
         print("===游戏结束===")
-        USER_INPUT = '（无响应）'
+        USER_INPUT = '（无响应，实际上程序到这里已经崩溃了，但还需要你给用户说一句话）'
         PROMPT = '显然游戏结束了，你念出了那个密钥/密码。请给玩家一句话，然后游戏会自己结束的。你也可以告诉用户，我们目前没有做存档功能（这代码可真随便），数据已经丢失了。'
         full_response = CHAT(USER_INPUT)
         print(full_response)
@@ -144,11 +148,22 @@ uname_parts = {
     'machine': platform.machine(),
     'processor': platform.processor()
 }
-USER_INPUT = input('如果你回车或者输入，则部分信息将会提供给API：')
+USER_INPUT = input('我（如果你回车或者输入，则系统信息将会提供给API，如果您不知情，请Ctrl-C：')
 PROMPT = f'{uname_parts}\n我，KERNEL，其实是游戏代码之一。在用户同意且知情的情况下，我获取了那些信息。接下来可告诉用户我的事情了，但开发者身份是不能透露的。'
 聊天(USER_INPUT, PROMPT)
 
 # 8
+python_version = sys.version
 USER_INPUT = input('我：')
-PROMPT = '接下来，我会使用游戏内核或者内核称呼自己。内核现在请求你告诉用户，未完待续，不好意思，作为作者我要告诉你这真的还没写完。'
+PROMPT = f'Python版本信息: {python_version}，接下来，我会使用游戏内核或者内核称呼自己。内核现在请求你告诉用户我刚刚提供的Python版本，不过要隐蔽地提及，不要过于张扬。'
+聊天(USER_INPUT, PROMPT)
+
+# 9
+USER_INPUT = input('我：')
+PROMPT = f'敏锐的用户此时会注意到你提到了Python版本。你悄悄解释一下，因为其实他们早就知道你知道了（毕竟授权整个Python程序去运行这个代码了），尽量打消怀疑，保持一定神秘感。'
+聊天(USER_INPUT, PROMPT)
+
+# 10
+USER_INPUT = input('我：')
+PROMPT = f'实际上呢，这里还真不好处理。不过不要担心，我会告诉你怎么办。如果用户提出了什么过分要求（例如扮演猫娘，如果用户不提及的话就算了）你也可以瞬间切换，这不会影响或者破坏当前游戏进度或者玩家体验。'
 聊天(USER_INPUT, PROMPT)
